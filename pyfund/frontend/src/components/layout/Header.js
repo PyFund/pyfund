@@ -39,7 +39,11 @@ export class Header extends Component {
           }
           id="nav-dropdown"
         >
-          <NavDropdown.Item onClick={this.props.logout} eventKey="1.1">
+          <NavDropdown.Item
+            onClick={this.props.logout}
+            eventKey="logout"
+            variant="light"
+          >
             Logout
           </NavDropdown.Item>
         </NavDropdown>
@@ -64,7 +68,6 @@ export class Header extends Component {
 
     return (
       <Navbar collapseOnSelect expand="sm" bg="primary" variant="dark">
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Container>
           <Navbar.Brand href="#">PyFund</Navbar.Brand>
           <Navbar.Collapse id="responsive-navbar-nav">
@@ -74,6 +77,7 @@ export class Header extends Component {
             </Nav>
             {isAuthenticated ? authLinks : guestLinks}
           </Navbar.Collapse>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         </Container>
       </Navbar>
     );
