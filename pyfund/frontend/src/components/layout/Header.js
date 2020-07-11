@@ -2,11 +2,6 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
-import NavDropdown from "react-bootstrap/NavDropdown";
-import Container from "react-bootstrap/Container";
-
 import { logout } from "../../actions/auth";
 
 export class Header extends Component {
@@ -20,66 +15,66 @@ export class Header extends Component {
 
     // show when logged in
     const authLinks = (
-      <Nav>
-        <NavDropdown
-          title={
-            <>
-              <span>
-                <img
-                  className="thumbnail-image mr-2"
-                  src="https://www.pinclipart.com/picdir/big/157-1578186_isolation-gown-clipart.png"
-                  alt="user pic"
-                  height="25"
-                />
-              </span>
-              <span>
-                <strong>{user ? `${user.username}` : ""}</strong>
-              </span>
-            </>
-          }
-          id="nav-dropdown"
-        >
-          <NavDropdown.Item
-            onClick={this.props.logout}
-            eventKey="logout"
-            variant="light"
-          >
+      <ul className="navbar-nav ml-auto mb-2 mb-lg-0">
+        <span className="navbar-text mr-3">
+          <strong>{user ? user.username : ""}</strong>
+        </span>
+        <li className="nav-item">
+          <Link to="/upload" className="nav-link">
+            Add Series
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to="/user" className="nav-link">
+            Profile
+          </Link>
+        </li>
+        <li className="nav-item">
+          <span onClick={this.props.logout} className="nav-link">
             Logout
-          </NavDropdown.Item>
-        </NavDropdown>
-      </Nav>
+          </span>
+        </li>
+      </ul>
     );
 
     // show when not logged in
     const guestLinks = (
-      <Nav>
-        <Nav.Link>
+      <ul className="navbar-nav ml-auto mb-2 mb-lg-0">
+        <li className="nav-item">
           <Link to="/register" className="nav-link">
             Register
           </Link>
-        </Nav.Link>
-        <Nav.Link>
+        </li>
+        <li className="nav-item">
           <Link to="/login" className="nav-link">
             Login
           </Link>
-        </Nav.Link>
-      </Nav>
+        </li>
+      </ul>
     );
 
     return (
-      <Navbar collapseOnSelect expand="sm" bg="primary" variant="dark">
-        <Container>
-          <Navbar.Brand href="#">PyFund</Navbar.Brand>
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="mr-auto">
-              <Nav.Link>Home</Nav.Link>
-              <Nav.Link>Reports</Nav.Link>
-            </Nav>
+      <nav className="navbar navbar-expand-sm navbar-light bg-light">
+        <div className="container-fluid">
+          <a className="navbar-brand" href="#">
+            PyFund
+          </a>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navToggle"
+            aria-controls="navToggle"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navToggle">
             {isAuthenticated ? authLinks : guestLinks}
-          </Navbar.Collapse>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        </Container>
-      </Navbar>
+          </div>
+        </div>
+      </nav>
     );
   }
 }

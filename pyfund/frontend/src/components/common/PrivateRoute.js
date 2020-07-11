@@ -1,20 +1,21 @@
-import React from "react";
+import React, { Component } from "react";
 import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import Spinner from "react-bootstrap/Spinner";
+import { setPathname } from "../../actions/pathname";
 
-const PrivateRoute = ({ component: Component, auth, ...rest }) => (
+const PrivateRoute = ({ component: Component, auth, setPathname, ...rest }) => (
   <Route
     {...rest}
     render={(props) => {
       if (auth.isLoading) {
         return (
-          <Spinner animation="border" variant="primary">
+          <div class="spinner-border" role="status">
             Loading
-          </Spinner>
+          </div>
         );
       } else if (!auth.isAuthenticated) {
-        return <Redirect to="/login" />;
+        setPathname(props.location.pathname);
+        return <Redirect to={{ pathname: "/login" }} />;
       } else {
         return <Component {...props} />;
       }
@@ -26,4 +27,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps)(PrivateRoute);
+export default connect(mapStateToProps, { setPathname })(PrivateRoute);

@@ -3,6 +3,7 @@ import { Link, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { login } from "../../actions/auth";
+import { setPathname } from "../../actions/pathname";
 
 export class Login extends Component {
   state = {
@@ -13,6 +14,7 @@ export class Login extends Component {
   static propTypes = {
     login: PropTypes.func.isRequired,
     isAuthenticated: PropTypes.bool,
+    pathname: PropTypes.object.isRequired,
   };
 
   onSubmit = (e) => {
@@ -27,7 +29,8 @@ export class Login extends Component {
 
   render() {
     if (this.props.isAuthenticated) {
-      return <Redirect to="/" />;
+      const redirectPath = this.props.pathname;
+      return <Redirect to={redirectPath} />;
     }
     const { username, password } = this.state;
     return (
@@ -35,7 +38,7 @@ export class Login extends Component {
         <div className="card card-body mt-5">
           <h2 className="text-center">Login</h2>
           <form onSubmit={this.onSubmit}>
-            <div className="form-group">
+            <div className="mb-3">
               <label>Username</label>
               <input
                 type="text"
@@ -45,7 +48,7 @@ export class Login extends Component {
                 value={username}
               />
             </div>
-            <div className="form-group">
+            <div className="mb-3">
               <label>Password</label>
               <input
                 type="password"
@@ -55,7 +58,7 @@ export class Login extends Component {
                 value={password}
               />
             </div>
-            <div className="form-group">
+            <div className="mb-3">
               <button type="submit" className="btn btn-primary">
                 Login
               </button>
@@ -72,6 +75,7 @@ export class Login extends Component {
 
 const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
+  pathname: state.pathname,
 });
 
-export default connect(mapStateToProps, { login })(Login);
+export default connect(mapStateToProps, { login, setPathname })(Login);

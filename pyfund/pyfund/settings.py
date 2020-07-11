@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "knox",
     "frontend",
     "accounts",
+    "upload",
 ]
 
 REST_FRAMEWORK = {"DEFAULT_AUTHENTICATION_CLASSES": ("knox.auth.TokenAuthentication",)}
@@ -86,6 +87,9 @@ DATABASES = {
     }
 }
 
+# File Upload
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

@@ -47,7 +47,7 @@ export class Register extends Component {
         <div className="card card-body mt-5">
           <h2 className="text-center">Register</h2>
           <form onSubmit={this.onSubmit}>
-            <div className="form-group">
+            <div className="mb-3">
               <label>Username</label>
               <input
                 type="text"
@@ -57,7 +57,7 @@ export class Register extends Component {
                 value={username}
               />
             </div>
-            <div className="form-group">
+            <div className="mb-3">
               <label>Email</label>
               <input
                 type="email"
@@ -67,7 +67,7 @@ export class Register extends Component {
                 value={email}
               />
             </div>
-            <div className="form-group">
+            <div className="mb-3">
               <label>Password</label>
               <input
                 type="password"
@@ -77,7 +77,7 @@ export class Register extends Component {
                 value={password}
               />
             </div>
-            <div className="form-group">
+            <div className="mb-3">
               <label>Confirm Password</label>
               <input
                 type="password"
@@ -87,7 +87,7 @@ export class Register extends Component {
                 value={password2}
               />
             </div>
-            <div className="form-group">
+            <div className="mb-3">
               <button type="submit" className="btn btn-primary">
                 Register
               </button>
