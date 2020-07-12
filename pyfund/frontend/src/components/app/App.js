@@ -13,8 +13,8 @@ import Login from "../accounts/Login";
 
 import Header from "../layout/Header";
 import Landing from "../layout/Landing";
-import User from "../layout/User";
-import Upload from "../upload/Upload";
+import Profile from "../profile/Profile";
+import Manage from "../manage/Manage";
 
 class App extends Component {
   componentDidMount() {
@@ -32,8 +32,8 @@ class App extends Component {
                 <Route exact path="/" component={Landing} />
                 <Route exact path="/register" component={Register} />
                 <Route exact path="/login" component={Login} />
-                <PrivateRoute exact path="/user" component={User} />
-                <PrivateRoute exact path="/upload" component={Upload} />
+                <PrivateRoute exact path="/profile" component={Profile} />
+                <PrivateRoute exact path="/manage" component={Manage} />
               </Switch>
             </div>
           </Router>

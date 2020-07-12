@@ -20,8 +20,8 @@ export class Header extends Component {
           <strong>{user ? user.username : ""}</strong>
         </span>
         <li className="nav-item">
-          <Link to="/upload" className="nav-link">
-            Add Series
+          <Link to="/manage" className="nav-link">
+            Manage Series
           </Link>
         </li>
         <li className="nav-item">

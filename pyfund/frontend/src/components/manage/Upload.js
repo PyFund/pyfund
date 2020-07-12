@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { uploadPublic } from "../../actions/upload";
 
 export class Upload extends Component {
   state = {
@@ -7,6 +10,12 @@ export class Upload extends Component {
     privacy: "public",
     note: "",
     seriesType: "",
+    seriesName: "",
+  };
+
+  static propTypes = {
+    isLoading: PropTypes.bool.isRequired,
+    uploadPublic: PropTypes.func.isRequired,
   };
 
   onChange = (e) =>
@@ -20,12 +29,26 @@ export class Upload extends Component {
       filename: e.target.files[0].name,
     });
 
-  onSubmit = () => {
-    const { fileUpload, filename, privacy, note } = this.state;
+  onSubmit = (e) => {
+    e.preventDefault(); // prevents form from reloading page
+
+    const { privacy, fileUpload, seriesName, seriesType, note } = this.state;
+
+    if (privacy === "public") {
+      this.props.uploadPublic(fileUpload, seriesName, seriesType, note);
+      this.setState({
+        fileUpload: null,
+        filename: null,
+        privacy: "public",
+        note: "",
+        seriesType: "",
+        seriesName: "",
+      });
+    }
   };
 
   render() {
-    const { filename, note } = this.state;
+    const { filename, note, seriesName } = this.state;
 
     return (
       <div className="col-md-6 m-auto">
@@ -72,6 +95,16 @@ export class Upload extends Component {
               </label>
             </div>
             <div className="mb-3">
+              <span className="form-text mr-3">Series Name</span>
+              <input
+                className="form-control"
+                type="text"
+                name="seriesName"
+                value={seriesName}
+                onChange={this.onChange}
+              />
+            </div>
+            <div className="mb-3">
               <span className="form-text mr-3">Series Type</span>
               <select
                 className="form-select"
@@ -109,4 +142,8 @@ export class Upload extends Component {
   }
 }
 
-export default Upload;
+const mapStateToProps = (state) => ({
+  isLoading: state.upload.isLoading,
+});
+
+export default connect(mapStateToProps, { uploadPublic })(Upload);
