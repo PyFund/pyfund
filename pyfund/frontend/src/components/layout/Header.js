@@ -25,7 +25,7 @@ export class Header extends Component {
           </Link>
         </li>
         <li className="nav-item">
-          <Link to="/user" className="nav-link">
+          <Link to="/profile" className="nav-link">
             Profile
           </Link>
         </li>
@@ -54,7 +54,7 @@ export class Header extends Component {
     );
 
     return (
-      <nav className="navbar navbar-expand-sm navbar-light bg-light">
+      <nav className="navbar navbar-expand-sm navbar-light bg-light mb-3">
         <div className="container-fluid">
           <a className="navbar-brand" href="#">
             PyFund

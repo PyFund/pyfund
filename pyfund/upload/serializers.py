@@ -5,7 +5,7 @@ from .models import PublicFile
 class PostPublicSerializer(serializers.ModelSerializer):
     class Meta:
         model = PublicFile
-        fields = ["id", "created_at", "seriesName", "seriesType", "note"]
+        fields = ["id", "file", "created_at", "seriesName", "seriesType", "note"]
 
 
 class GetPublicSerializer(serializers.ModelSerializer):

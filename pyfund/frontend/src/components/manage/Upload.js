@@ -108,11 +108,11 @@ export class Upload extends Component {
               <span className="form-text mr-3">Series Type</span>
               <select
                 className="form-select"
-                defaultValue="default"
+                value={this.state.seriesType}
                 name="seriesType"
                 onChange={this.onChange}
               >
-                <option value="default">Select Type...</option>
+                <option>Select Type...</option>
                 <option value="return">Return</option>
                 <option value="attribution">Attribution</option>
                 <option value="exposure">Exposure</option>

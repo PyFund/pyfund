@@ -6,6 +6,7 @@ import {
   PUBLIC_UPLOADED,
   UPLOAD_ERROR,
   GET_PUBLIC,
+  DELETE_PUBLIC,
 } from "./types";
 
 // CHECK TOKEN & LOAD USER
@@ -24,7 +25,7 @@ export const uploadPublic = (file, seriesName, seriesType, note) => (
   const config = { headers: { "content-type": "multipart/form-data" } };
 
   axios
-    .post("/api/upload/public", formData, config)
+    .post("/api/series/public", formData, config)
     .then((res) => {
       dispatch({
         type: PUBLIC_UPLOADED,
@@ -39,7 +40,7 @@ export const uploadPublic = (file, seriesName, seriesType, note) => (
 
 export const getPublic = () => (dispatch) => {
   axios
-    .get("/api/upload/public")
+    .get("/api/series/public")
     .then((res) => {
       dispatch({
         type: GET_PUBLIC,
@@ -50,4 +51,19 @@ export const getPublic = () => (dispatch) => {
       dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({ type: UPLOAD_ERROR });
     });
+};
+
+export const deletePublic = (id) => (dispatch) => {
+  console.log("Received id" + id);
+  axios
+    .delete(`api/series/public/${id}/`)
+    .then((res) =>
+      dispatch({
+        type: DELETE_PUBLIC,
+        payload: id,
+      })
+    )
+    .catch((err) =>
+      dispatch(returnErrors(err.response.data, err.response.status))
+    );
 };

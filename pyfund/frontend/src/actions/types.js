@@ -13,3 +13,4 @@ export const FILE_UPLOADING = "FILE_UPLOADING";
 export const PUBLIC_UPLOADED = "PUBLIC_UPLOADED";
 export const UPLOAD_ERROR = "UPLOAD_ERROR";
 export const GET_PUBLIC = "GET_PUBLIC";
+export const DELETE_PUBLIC = "DELETE_PUBLIC";

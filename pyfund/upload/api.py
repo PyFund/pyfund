@@ -56,4 +56,5 @@ class PublicUploadAPIDetail(APIView):
     def delete(self, request, pk, format=None):
 
         file = self.get_object(pk=pk)
+        file.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

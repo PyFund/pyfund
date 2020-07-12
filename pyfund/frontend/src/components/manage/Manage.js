@@ -7,29 +7,34 @@ export class Manage extends Component {
     return (
       <Fragment>
         <nav>
-          <div class="nav nav-pills" role="tablist">
+          <div className="nav nav-pills" role="tablist">
             <a
-              class="nav-link active"
+              className="nav-link active"
               data-toggle="tab"
               href="#nav-public"
               role="tab"
             >
               Public Series
             </a>
-            <a class="nav-link" data-toggle="tab" href="#nav-new" role="tab">
+            <a
+              className="nav-link"
+              data-toggle="tab"
+              href="#nav-new"
+              role="tab"
+            >
               Add New Series
             </a>
           </div>
         </nav>
-        <div class="tab-content">
+        <div className="tab-content">
           <div
-            class="tab-pane fade show active"
+            className="tab-pane fade show active"
             id="nav-public"
             role="tabpanel"
           >
             <Public />
           </div>
-          <div class="tab-pane fade" id="nav-new" role="tabpanel">
+          <div className="tab-pane fade" id="nav-new" role="tabpanel">
             <Upload />
           </div>
         </div>

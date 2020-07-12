@@ -3,11 +3,12 @@ import {
   PUBLIC_UPLOADED,
   UPLOAD_ERROR,
   GET_PUBLIC,
+  DELETE_PUBLIC,
 } from "../actions/types";
 
 const initialState = {
   isLoading: false,
-  public: [],
+  publicSeries: [],
 };
 
 export default function (state = initialState, action) {
@@ -21,12 +22,19 @@ export default function (state = initialState, action) {
       return {
         ...state,
         isLoading: false,
-        public: [...state.public, action.payload],
+        publicSeries: [...state.publicSeries, action.payload],
       };
     case GET_PUBLIC:
       return {
         ...state,
-        public: action.payload,
+        publicSeries: action.payload,
+      };
+    case DELETE_PUBLIC:
+      return {
+        ...state,
+        publicSeries: state.publicSeries.filter(
+          (publicSeries) => publicSeries.id !== action.payload
+        ),
       };
     case UPLOAD_ERROR:
       return {
