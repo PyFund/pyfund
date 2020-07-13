@@ -20,6 +20,11 @@ export class Header extends Component {
           <strong>{user ? user.username : ""}</strong>
         </span>
         <li className="nav-item">
+          <Link to="/reports" className="nav-link">
+            Reports
+          </Link>
+        </li>
+        <li className="nav-item">
           <Link to="/manage" className="nav-link">
             Manage Series
           </Link>

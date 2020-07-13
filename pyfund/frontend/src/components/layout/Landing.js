@@ -1,8 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
+import axios from "axios";
+import AllSeriesPerfTable from "../analyze/AllSeriesPerfTable";
 
 export class Landing extends Component {
   render() {
-    return <h1>Landing Page</h1>;
+    return <AllSeriesPerfTable />;
   }
 }
 

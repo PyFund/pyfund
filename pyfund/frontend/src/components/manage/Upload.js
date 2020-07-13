@@ -52,7 +52,7 @@ export class Upload extends Component {
 
     return (
       <div className="col-md-6 m-auto">
-        <div className="card card-body mt-5">
+        <div className="card card-body">
           <h2 className="text-center">Upload New Series</h2>
           <form onSubmit={this.onSubmit}>
             <div className="form-file form-file-lg mb-3">

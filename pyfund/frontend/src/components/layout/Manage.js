@@ -1,13 +1,13 @@
 import React, { Component, Fragment } from "react";
-import Upload from "./Upload";
-import Public from "./Public";
+import Upload from "../manage/Upload";
+import Public from "../manage/Public";
 
 export class Manage extends Component {
   render() {
     return (
       <Fragment>
         <nav>
-          <div className="nav nav-pills" role="tablist">
+          <div className="nav nav-pills mb-5" role="tablist">
             <a
               className="nav-link active"
               data-toggle="tab"

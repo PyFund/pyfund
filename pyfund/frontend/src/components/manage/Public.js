@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { getPublic, deletePublic } from "../../actions/upload";
 import { IconInfo } from "../common/Icon";
+import moment from "moment";
 
 export class Public extends Component {
   static propTypes = {
@@ -17,7 +18,7 @@ export class Public extends Component {
 
   render() {
     return (
-      <div className="container mt-3">
+      <div className="container">
         <h2>Public Series</h2>
         <table className="table">
           <thead>
@@ -31,7 +32,6 @@ export class Public extends Component {
           </thead>
           <tbody>
             {this.props.publicSeries.map((series) => {
-              const date = new Date(series.created_at);
               return (
                 <tr key={series.id}>
                   <td>{series.id}</td>
@@ -47,7 +47,7 @@ export class Public extends Component {
                     </span>
                   </td>
                   <td>{series.seriesType}</td>
-                  <td>{date.toLocaleString()}</td>
+                  <td>{moment(series.created_at).fromNow()}</td>
                   <td>
                     <button
                       className="btn btn-danger btn-sm"

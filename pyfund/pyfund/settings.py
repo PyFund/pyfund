@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "frontend",
     "accounts",
     "upload",
+    "analyze",
 ]
 
 REST_FRAMEWORK = {"DEFAULT_AUTHENTICATION_CLASSES": ("knox.auth.TokenAuthentication",)}

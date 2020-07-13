@@ -1,7 +1,8 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import { Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { setPathname } from "../../actions/pathname";
+import { IconLoading } from "./Icon";
 
 const PrivateRoute = ({ component: Component, auth, setPathname, ...rest }) => (
   <Route
@@ -9,9 +10,10 @@ const PrivateRoute = ({ component: Component, auth, setPathname, ...rest }) => (
     render={(props) => {
       if (auth.isLoading) {
         return (
-          <div class="spinner-border" role="status">
+          <Fragment>
+            <IconLoading />
             Loading
-          </div>
+          </Fragment>
         );
       } else if (!auth.isAuthenticated) {
         setPathname(props.location.pathname);

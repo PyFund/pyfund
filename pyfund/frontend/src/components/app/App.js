@@ -13,8 +13,9 @@ import Login from "../accounts/Login";
 
 import Header from "../layout/Header";
 import Landing from "../layout/Landing";
-import Profile from "../profile/Profile";
-import Manage from "../manage/Manage";
+import Profile from "../layout/Profile";
+import Manage from "../layout/Manage";
+import Report from "../layout/Report";
 
 class App extends Component {
   componentDidMount() {
@@ -34,6 +35,7 @@ class App extends Component {
                 <Route exact path="/login" component={Login} />
                 <PrivateRoute exact path="/profile" component={Profile} />
                 <PrivateRoute exact path="/manage" component={Manage} />
+                <PrivateRoute exact path="/reports" component={Report} />
               </Switch>
             </div>
           </Router>

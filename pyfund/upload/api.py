@@ -34,7 +34,7 @@ class PublicUploadAPI(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class PublicUploadAPIDetail(APIView):
+class PublicUploadDetailAPI(APIView):
 
     permission_classes = [permissions.AllowAny]
 
