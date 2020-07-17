@@ -10,7 +10,7 @@ black = "*"
 django = "*"
 djangorestframework = "*"
 django-rest-knox = "*"
-pyform = "==0.0.9"
+pyform = "==0.0.10"
 pandas = "*"
 
 [requires]

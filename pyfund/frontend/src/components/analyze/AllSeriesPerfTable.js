@@ -9,7 +9,7 @@ export class AllSeriesPerfTable extends Component {
 
   componentDidMount() {
     axios
-      .get("http://localhost:8000/api/analyze/series_summary")
+      .get("/api/analyze/series_summary")
       .then((res) => this.setState({ tableData: res.data }));
   }
 

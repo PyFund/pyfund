@@ -30,7 +30,7 @@ export class SeriesRollVolChart extends Component {
     this.setState({ isLoading: true });
     axios
       .get(
-        `http://localhost:8000/api/analyze/series_rolling_vol?id=${seriesId}&freq=${freq}&window=${window}`
+        `/api/analyze/series_rolling_vol?id=${seriesId}&freq=${freq}&window=${window}`
       )
       .then((res) =>
         this.setState({

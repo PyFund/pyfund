@@ -71,7 +71,10 @@ class SeriesSummaryView(APIView):
 class SeriesRollingVol(APIView):
     def get(self, request, *args, **kwargs):
 
+        # Load all objects
         files = PublicFile.objects.all()
+
+        # Filter by request
         pk = request.query_params.get("id", None)
         freq = request.query_params.get("freq", "M")
         window = int(request.query_params.get("window", 36))
@@ -79,17 +82,31 @@ class SeriesRollingVol(APIView):
         if pk is not None:
             files = files.filter(pk=pk)
 
-        if len(files) > 0:
+        # Perform operation on the filter result
+        if len(files) == 1:
+
+            # Select file to use, load it into Return Series
             file = files[0]
             series = ReturnSeries.read_csv(file.file)
+
+            # Set series name. Default behavior without this is to use
+            # the column name
             series.name = file.seriesName
-            rolling_vol = series.get_rolling_ann_vol(freq=freq, window=window).get(
-                file.seriesName
-            )
+
+            # Create rolling volatility
+            rolling_vol = series.get_rolling_ann_vol(freq=freq, window=window)
+            rolling_vol = rolling_vol.get(file.seriesName)
+
+            # Format return
             rolling_vol.index = to_js_time(rolling_vol.index)
             rolling_vol = rolling_vol.reset_index()
             rolling_vol = rolling_vol.to_json(orient="values")
             result = {"name": file.seriesName, "data": rolling_vol}
+
             return JsonResponse(result, safe=False)
+
+        elif len(files) > 1:
+            raise Http404
+
         else:
             raise Http404

@@ -44,6 +44,7 @@ export const hcPercentSeriesConfig = (decimals = 0) => {
     tooltip: hcPercentTooltip(decimals),
     series: [],
     chart: { height: (2 / 3) * 100 + "%" },
+    plotOptions: { series: { animation: { duration: 300 } } },
     navigator: { enabled: false },
     scrollbar: { enabled: false },
     credits: { enabled: false },
