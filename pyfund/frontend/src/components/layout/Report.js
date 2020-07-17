@@ -31,7 +31,7 @@ export class Report extends Component {
             id="nav-reports"
             role="tabpanel"
           >
-            <SeriesRollVolChart seriesId="6" freq="D" window="60" />
+            <SeriesRollVolChart />
           </div>
           <div className="tab-pane fade" id="nav-new" role="tabpanel">
             new

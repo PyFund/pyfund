@@ -15,6 +15,7 @@ export class SeriesRollVolChart extends Component {
     seriesId: "",
     freq: "M",
     window: "36",
+    bm: "",
     isConfig: true,
     isLoading: false,
     initialized: false,
@@ -26,11 +27,13 @@ export class SeriesRollVolChart extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    const { seriesId, freq, window } = this.state;
+    const { seriesId, freq, window, bm } = this.state;
     this.setState({ isLoading: true });
     axios
       .get(
-        `/api/analyze/series_rolling_vol?id=${seriesId}&freq=${freq}&window=${window}`
+        `/api/analyze/series_rolling_vol?id=${seriesId}&freq=${freq}&window=${window}&${
+          bm == "" ? "" : "&bm=" + bm.join(",")
+        }`
       )
       .then((res) =>
         this.setState({
@@ -47,6 +50,14 @@ export class SeriesRollVolChart extends Component {
       [e.target.name]: e.target.value,
     });
 
+  onChangeBm = (e) => {
+    const value = Array.from(
+      e.target.selectedOptions,
+      (option) => option.value
+    );
+    this.setState({ bm: value });
+  };
+
   toggleConfig = () =>
     this.setState({
       isConfig: !this.state.isConfig,
@@ -57,6 +68,7 @@ export class SeriesRollVolChart extends Component {
       seriesId,
       freq,
       window,
+      bm,
       plotData,
       isConfig,
       isLoading,
@@ -91,10 +103,24 @@ export class SeriesRollVolChart extends Component {
               value={seriesId}
               name="seriesId"
               onChange={this.onChange}
+              required
             >
               <option>Select Series...</option>
               {this.props.publicSeries.map((series) => (
                 <option value={series.id}>{series.seriesName}</option>
+              ))}
+            </select>
+            <label>Benchmark</label>
+            <select
+              className="form-select"
+              name="bm"
+              onChange={this.onChangeBm}
+              multiple
+            >
+              {this.props.publicSeries.map((series) => (
+                <option value={series.id} disabled={series.id == seriesId}>
+                  {series.seriesName}
+                </option>
               ))}
             </select>
           </div>
@@ -105,6 +131,7 @@ export class SeriesRollVolChart extends Component {
               value={freq}
               name="freq"
               onChange={this.onChange}
+              required
             >
               {frequencies().map((frequency) => (
                 <option value={frequency.value}>{frequency.text}</option>
@@ -119,6 +146,7 @@ export class SeriesRollVolChart extends Component {
               name="window"
               onChange={this.onChange}
               value={window}
+              required
             />
           </div>
           <div className="mb-3">
@@ -132,10 +160,12 @@ export class SeriesRollVolChart extends Component {
 
     if (plotData) {
       const options = hcPercentSeriesConfig();
-      options.series.push({
-        name: plotData.name,
-        data: JSON.parse(plotData.data),
-      });
+      plotData.map((item) =>
+        options.series.push({
+          name: item.name,
+          data: JSON.parse(item.data),
+        })
+      );
 
       chart = (
         <div>

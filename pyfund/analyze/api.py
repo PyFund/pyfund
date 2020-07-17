@@ -78,32 +78,99 @@ class SeriesRollingVol(APIView):
         pk = request.query_params.get("id", None)
         freq = request.query_params.get("freq", "M")
         window = int(request.query_params.get("window", 36))
+        bm = request.query_params.get("bm", None)
 
         if pk is not None:
-            files = files.filter(pk=pk)
+            series_files = files.filter(pk=pk)
 
         # Perform operation on the filter result
-        if len(files) == 1:
+        if len(series_files) == 1:
 
             # Select file to use, load it into Return Series
-            file = files[0]
+            file = series_files[0]
             series = ReturnSeries.read_csv(file.file)
 
             # Set series name. Default behavior without this is to use
             # the column name
             series.name = file.seriesName
 
-            # Create rolling volatility
-            rolling_vol = series.get_rolling_ann_vol(freq=freq, window=window)
-            rolling_vol = rolling_vol.get(file.seriesName)
+            if bm is not None:
+                bm = bm.split(",")
+                bm_files = files.filter(pk__in=bm)
 
-            # Format return
-            rolling_vol.index = to_js_time(rolling_vol.index)
-            rolling_vol = rolling_vol.reset_index()
-            rolling_vol = rolling_vol.to_json(orient="values")
-            result = {"name": file.seriesName, "data": rolling_vol}
+                for bm_file in bm_files:
 
-            return JsonResponse(result, safe=False)
+                    bm_series = ReturnSeries.read_csv(bm_file.file)
+                    bm_series.name = bm_file.seriesName
+                    series.add_bm(bm_series, bm_file.seriesName)
+
+            # Create results
+            result = series.get_rolling_ann_vol(freq=freq, window=window)
+
+            output = []
+            for name, series in result.items():
+
+                series.index = to_js_time(series.index)
+                series = series.reset_index()
+                series = series.to_json(orient="values")
+                output.append({"name": name, "data": series})
+
+            return JsonResponse(output, safe=False)
+
+        elif len(files) > 1:
+            raise Http404
+
+        else:
+            raise Http404
+
+
+class SeriesIndexSeries(APIView):
+    def get(self, request, *args, **kwargs):
+
+        # Load all objects
+        files = PublicFile.objects.all()
+
+        # Filter by request
+        pk = request.query_params.get("id", None)
+        freq = request.query_params.get("freq", "D")
+        bm = request.query_params.get("bm", None)
+
+        if pk is not None:
+            series_files = files.filter(pk=pk)
+
+        # Perform operation on the filter result
+        if len(series_files) == 1:
+
+            # Select file to use, load it into Return Series
+            file = series_files[0]
+            series = ReturnSeries.read_csv(file.file)
+
+            # Set series name. Default behavior without this is to use
+            # the column name
+            series.name = file.seriesName
+
+            if bm is not None:
+                bm = bm.split(",")
+                bm_files = files.filter(pk__in=bm)
+
+                for bm_file in bm_files:
+
+                    bm_series = ReturnSeries.read_csv(bm_file.file)
+                    bm_series.name = bm_file.seriesName
+                    series.add_bm(bm_series, bm_file.seriesName)
+
+            # Create results
+            result = series.get_index_series(freq=freq)
+
+            output = []
+            for name, series in result.items():
+
+                series.index = to_js_time(series.index)
+                series = series.reset_index()
+                series = series.to_json(orient="values")
+                output.append({"name": name, "data": series})
+
+            return JsonResponse(output, safe=False)
 
         elif len(files) > 1:
             raise Http404
