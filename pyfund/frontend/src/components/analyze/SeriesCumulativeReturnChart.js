@@ -6,15 +6,12 @@ import HighchartsReact from "highcharts-react-official";
 import { hcPercentSeriesConfig } from "./hcUtil";
 import { getPublic } from "../../actions/upload";
 import { connect } from "react-redux";
-import { frequencies } from "./util";
 import { IconEdit, IconBack } from "../common/Icon";
 
-export class SeriesRollVolChart extends Component {
+export class SeriesCumulativeReturnChart extends Component {
   state = {
     plotData: null,
     seriesId: "",
-    freq: "M",
-    window: "36",
     bm: "",
     isConfig: true,
     isLoading: false,
@@ -27,11 +24,11 @@ export class SeriesRollVolChart extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    const { seriesId, freq, window, bm } = this.state;
+    const { seriesId, bm } = this.state;
     this.setState({ isLoading: true });
     axios
       .get(
-        `/api/analyze/series_rolling_vol?id=${seriesId}&freq=${freq}&window=${window}&${
+        `/api/analyze/series_index_series?id=${seriesId}${
           bm == "" ? "" : "&bm=" + bm.join(",")
         }`
       )
@@ -64,15 +61,7 @@ export class SeriesRollVolChart extends Component {
     });
 
   render() {
-    const {
-      seriesId,
-      freq,
-      window,
-      plotData,
-      isConfig,
-      isLoading,
-      initialized,
-    } = this.state;
+    const { seriesId, plotData, isConfig, isLoading, initialized } = this.state;
 
     var chart = (
       <Fragment>
@@ -83,7 +72,7 @@ export class SeriesRollVolChart extends Component {
     const configPage = (
       <Fragment>
         <div className="d-flex justify-content-between mb-2">
-          <div> Rolling Volatility</div>
+          <div>Cumulative Return</div>
           <div>
             <button
               onClick={this.toggleConfig}
@@ -118,38 +107,12 @@ export class SeriesRollVolChart extends Component {
               onChange={this.onChangeBm}
               multiple
             >
-              <option value="">Select Series...</option>
               {this.props.publicSeries.map((series) => (
                 <option value={series.id} disabled={series.id == seriesId}>
                   {series.seriesName}
                 </option>
               ))}
             </select>
-          </div>
-          <div className="mb-3">
-            <label>Frequency</label>
-            <select
-              className="form-select"
-              value={freq}
-              name="freq"
-              onChange={this.onChange}
-              required
-            >
-              {frequencies().map((frequency) => (
-                <option value={frequency.value}>{frequency.text}</option>
-              ))}
-            </select>
-          </div>
-          <div className="mb-3">
-            <label>Rolling Window</label>
-            <input
-              type="text"
-              className="form-control"
-              name="window"
-              onChange={this.onChange}
-              value={window}
-              required
-            />
           </div>
           <div className="mb-3">
             <button type="submit" className="btn btn-primary">
@@ -162,6 +125,7 @@ export class SeriesRollVolChart extends Component {
 
     if (plotData) {
       const options = hcPercentSeriesConfig();
+      // options.plotOptions.series.compare = "percent";
       plotData.map((item) =>
         options.series.push({
           name: item.name,
@@ -172,7 +136,7 @@ export class SeriesRollVolChart extends Component {
       chart = (
         <div>
           <div className="d-flex justify-content-between mb-2">
-            <div> Rolling Volatility</div>
+            <div>Cumulative Return</div>
             <div>
               <button
                 onClick={this.toggleConfig}
@@ -207,4 +171,6 @@ const mapStateToProps = (state) => ({
   publicSeries: state.upload.publicSeries,
 });
 
-export default connect(mapStateToProps, { getPublic })(SeriesRollVolChart);
+export default connect(mapStateToProps, { getPublic })(
+  SeriesCumulativeReturnChart
+);

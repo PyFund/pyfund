@@ -1,6 +1,7 @@
 from django.http import HttpResponse, Http404, JsonResponse
 from upload.models import PublicFile
-from pyform.returnseries import ReturnSeries, CashSeries
+from pyform import ReturnSeries, CashSeries
+from pyform.analysis import table_calendar_return
 from rest_framework.views import APIView
 from rest_framework import status
 import json
@@ -117,7 +118,7 @@ class SeriesRollingVol(APIView):
 
             return JsonResponse(output, safe=False)
 
-        elif len(files) > 1:
+        elif len(series_files) > 1:
             raise Http404
 
         else:
@@ -172,8 +173,37 @@ class SeriesIndexSeries(APIView):
 
             return JsonResponse(output, safe=False)
 
-        elif len(files) > 1:
+        elif len(series_files) > 1:
             raise Http404
 
         else:
             raise Http404
+
+
+class SeriesCalendarReturn(APIView):
+    def get(self, request, *args, **kwargs):
+
+        files = PublicFile.objects.all()
+        pk = request.query_params.get("id", None)
+
+        if pk is not None:
+            series_files = files.filter(pk=pk)
+
+        output = []
+        if len(series_files) == 1:
+
+            file = series_files[0]
+            series = ReturnSeries.read_csv(file.file)
+            series.name = file.seriesName
+            result = table_calendar_return(series)
+            result = result.to_json(orient="records")
+            output.append({"name": series.name, "data": result})
+
+            return JsonResponse(output, safe=False)
+
+        elif len(series_files) > 1:
+            raise Http404
+
+        else:
+            raise Http404
+

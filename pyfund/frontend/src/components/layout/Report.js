@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from "react";
 import SeriesRollVolChart from "../analyze/SeriesRollVolChart";
+import SeriesCumulativeReturnChart from "../analyze/SeriesCumulativeReturnChart";
+import SeriesCalendarReturnTable from "../analyze/SeriesCalendarReturnTable";
 
 export class Report extends Component {
   render() {
@@ -32,6 +34,8 @@ export class Report extends Component {
             role="tabpanel"
           >
             <SeriesRollVolChart />
+            <SeriesCumulativeReturnChart />
+            <SeriesCalendarReturnTable />
           </div>
           <div className="tab-pane fade" id="nav-new" role="tabpanel">
             new

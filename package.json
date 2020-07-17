@@ -32,12 +32,14 @@
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.0",
     "autoprefixer": "^9.8.4",
     "axios": "^0.19.2",
     "bootstrap": "^5.0.0-alpha1",
     "bootstrap-icons": "^1.0.0-alpha5",
     "highcharts": "^8.1.2",
     "highcharts-react-official": "^3.0.0",
+    "material-table": "^1.65.0",
     "moment": "^2.27.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
