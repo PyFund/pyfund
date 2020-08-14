@@ -8,14 +8,32 @@ import json
 import pandas as pd
 
 
-def to_js_time(pd_timestamp):
-    def to_utc(timestamp):
+def to_utc(timestamp) -> str:
+    """Convert timestamp to utc time in seconds and microseconds
 
-        try:
-            return timestamp.tz_convert("UTC").strftime("%s%f")
-        except:
-            # No timezone is set. Set timezone to US Eastern first
-            return to_utc(timestamp.tz_localize("US/Eastern"))
+    Args:
+        timestamp: either a pandas TimeStamp or a pandas Datetime Index
+
+    Returns:
+        str: time string in seconds and milliseconds
+    """
+
+    try:
+        return timestamp.tz_convert("UTC").strftime("%s%f")
+    except:
+        # No timezone is set. Set timezone to US Eastern first
+        return to_utc(timestamp.tz_localize("US/Eastern"))
+
+
+def to_js_time(pd_timestamp) -> float:
+    """Convert timestamp to javascript epoch
+
+    Args:
+        pd_timestamp: either a pandas TimeStamp or a pandas Datetime Index
+
+    Returns:
+        float: javascript epoch
+    """
 
     if isinstance(pd_timestamp, pd.Timestamp):
         return int(to_utc(pd_timestamp)) / 1000
@@ -23,15 +41,28 @@ def to_js_time(pd_timestamp):
         return to_utc(pd_timestamp).astype(int) / 1000
 
 
-def to_perc(num, decimals=2):
+def percent(num: float, decimals: int = 2) -> str:
+    """Format number as percent
+
+    Args:
+        num: number to format as percent 
+        decimals: Number of digits to keep after formatted as percent. Defaults to 2.
+
+    Returns:
+        str: number in percentage
+    """
 
     return str(round(num * 100, decimals)) + "%"
 
 
 class SeriesSummaryView(APIView):
+
     def get(self, request, *args, **kwargs):
 
+        # Load all objects
         files = PublicFile.objects.all()
+
+        # Filter by request
         pk = request.query_params.get("id", None)
 
         pk_params = []
@@ -43,6 +74,7 @@ class SeriesSummaryView(APIView):
 
         libor = CashSeries.read_fred_libor_1m()
 
+        # Perform operation on the filter result
         for file in files:
             series = ReturnSeries.read_csv(file.file)
             series.add_rf(libor, "libor")
@@ -57,8 +89,8 @@ class SeriesSummaryView(APIView):
                     "name": file.seriesName,
                     "start": to_js_time(start),
                     "end": to_js_time(end),
-                    "ann_ret": to_perc(ann_ret.value[0], 1),
-                    "ann_vol": to_perc(ann_vol.value[0], 1),
+                    "ann_ret": percent(ann_ret.value[0], 1),
+                    "ann_vol": percent(ann_vol.value[0], 1),
                     "sharpe": round(sharpe.value[0], 2),
                 }
             )
@@ -70,6 +102,7 @@ class SeriesSummaryView(APIView):
 
 
 class SeriesRollingVol(APIView):
+
     def get(self, request, *args, **kwargs):
 
         # Load all objects
@@ -206,4 +239,3 @@ class SeriesCalendarReturn(APIView):
 
         else:
             raise Http404
-
