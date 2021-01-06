@@ -34,7 +34,7 @@
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "autoprefixer": "^9.8.4",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bootstrap": "^5.0.0-alpha1",
     "bootstrap-icons": "^1.0.0-alpha5",
     "highcharts": "^8.1.2",
