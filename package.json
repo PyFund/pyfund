@@ -37,7 +37,7 @@
     "axios": "^0.19.2",
     "bootstrap": "^5.0.0-alpha1",
     "bootstrap-icons": "^1.0.0-alpha5",
-    "highcharts": "^8.1.2",
+    "highcharts": "^9.0.0",
     "highcharts-react-official": "^3.0.0",
     "material-table": "^1.65.0",
     "moment": "^2.27.0",
