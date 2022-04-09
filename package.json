@@ -40,7 +40,7 @@
     "highcharts": "^8.1.2",
     "highcharts-react-official": "^3.0.0",
     "material-table": "^1.65.0",
-    "moment": "^2.27.0",
+    "moment": "^2.29.2",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-data-table-component": "^6.9.7",
